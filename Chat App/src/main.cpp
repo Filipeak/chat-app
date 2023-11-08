@@ -3,39 +3,62 @@
 *  - https://learn.microsoft.com/en-us/windows/win32/winsock/getting-started-with-winsock
 * 
 * TODO:
-*  - Multiple clients - Disconnecting, Sending
-*  - Threading - Input, Server
+*  - Commands
+*  - Handle spaces
+*  - Handle names
+*  - Handle disconnects (removing from list)
 */
 
-#include "Network/Network.h"
-#include "Network/Client.h"
-#include "Network/Server.h"
+#include "Network.h"
+#include "Client.h"
 
-#define HOSTNAME "localhost"
-#define PORT "27015"
-#define SERVER_BUILD 0
+static std::mutex s_Mutex;
+static bool m_Finished;
 
-void OnListen(std::string s)
+static void OnListen(std::string s)
 {
 	std::cout << " > " << s << std::endl;
+}
+
+static void InputThread()
+{
+	bool isDone = false;
+
+	while (!isDone)
+	{
+		std::string s;
+		std::cin >> s;
+
+		Client::Send(s);
+
+		s_Mutex.lock();
+		isDone = m_Finished;
+		s_Mutex.unlock();
+	}
+}
+
+static void ListenThread()
+{
+	Client::Listen(OnListen);
+	Client::Disconnect();
+
+	s_Mutex.lock();
+	m_Finished = true;
+	s_Mutex.unlock();
 }
 
 int main()
 {
 	Network::Init();
 
-#if !SERVER_BUILD
-	if (Client::Connect(HOSTNAME, PORT))
+	if (Client::Connect("localhost", "1337"))
 	{
-		Client::Listen(OnListen);
-		Client::Disconnect();
+		std::thread t1(InputThread);
+		std::thread t2(ListenThread);
+
+		t1.join();
+		t2.join();
 	}
-#else
-	if (Server::Bind(PORT))
-	{
-		Server::Listen(OnListen);
-	}
-#endif
 
 	return 0;
 }

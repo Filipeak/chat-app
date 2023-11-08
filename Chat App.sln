@@ -5,6 +5,8 @@ VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Chat App", "Chat App\Chat App.vcxproj", "{DF3F52F6-ED0F-4354-B3A5-AF8DDD46BEDE}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server", "Server\Server.vcxproj", "{D948137D-773C-497E-9AF5-91FDE184F353}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{DF3F52F6-ED0F-4354-B3A5-AF8DDD46BEDE}.Release|x64.Build.0 = Release|x64
 		{DF3F52F6-ED0F-4354-B3A5-AF8DDD46BEDE}.Release|x86.ActiveCfg = Release|Win32
 		{DF3F52F6-ED0F-4354-B3A5-AF8DDD46BEDE}.Release|x86.Build.0 = Release|Win32
+		{D948137D-773C-497E-9AF5-91FDE184F353}.Debug|x64.ActiveCfg = Debug|x64
+		{D948137D-773C-497E-9AF5-91FDE184F353}.Debug|x64.Build.0 = Debug|x64
+		{D948137D-773C-497E-9AF5-91FDE184F353}.Debug|x86.ActiveCfg = Debug|Win32
+		{D948137D-773C-497E-9AF5-91FDE184F353}.Debug|x86.Build.0 = Debug|Win32
+		{D948137D-773C-497E-9AF5-91FDE184F353}.Release|x64.ActiveCfg = Release|x64
+		{D948137D-773C-497E-9AF5-91FDE184F353}.Release|x64.Build.0 = Release|x64
+		{D948137D-773C-497E-9AF5-91FDE184F353}.Release|x86.ActiveCfg = Release|Win32
+		{D948137D-773C-497E-9AF5-91FDE184F353}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

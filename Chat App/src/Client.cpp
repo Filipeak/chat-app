@@ -2,7 +2,6 @@
 
 int Client::m_FuncResult;
 SOCKET Client::m_Socket;
-char Client::m_ReceiveBuffer[RECEIVE_BUFFER_LENGTH];
 
 bool Client::Connect(std::string domain, std::string port)
 {
@@ -72,7 +71,7 @@ bool Client::Connect(std::string domain, std::string port)
 bool Client::Disconnect()
 {
 	m_FuncResult = shutdown(m_Socket, SD_SEND);
-
+	
 	if (m_FuncResult == SOCKET_ERROR)
 	{
 		NETWORK_LOG_ERR_WIN("shutdown");
@@ -90,15 +89,19 @@ bool Client::Listen(std::function<void(std::string)> callback)
 {
 	NETWORK_LOG("Listening...");
 
+	char receiveBuffer[RECEIVE_BUFFER_LENGTH];
+
 	do
 	{
-		m_FuncResult = recv(m_Socket, m_ReceiveBuffer, RECEIVE_BUFFER_LENGTH, 0);
+		ZeroMemory(receiveBuffer, sizeof(receiveBuffer));
+
+		m_FuncResult = recv(m_Socket, receiveBuffer, RECEIVE_BUFFER_LENGTH, 0);
 
 		if (m_FuncResult > 0)
 		{
 			NETWORK_LOG_ARG("Bytes received: ", m_FuncResult);
 
-			callback(m_ReceiveBuffer);
+			callback(receiveBuffer);
 		}
 		else if (m_FuncResult == 0)
 		{
