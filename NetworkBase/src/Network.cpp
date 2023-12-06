@@ -1,5 +1,7 @@
 #include "Network.h"
 
+std::mutex g_LogMutex;
+
 bool Network::Init()
 {
 	WSADATA wsaData;

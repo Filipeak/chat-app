@@ -1,10 +1,11 @@
 #include "Client.h"
+#include <ws2tcpip.h>
 
-int Client::m_FuncResult;
-SOCKET Client::m_Socket;
-
-bool Client::Connect(std::string domain, std::string port)
+bool Client::Connect(std::string host, std::string port)
 {
+	m_Host = host;
+	m_Port = port;
+
 	NETWORK_LOG("Connecting...");
 
 	struct addrinfo* result = NULL, * ptr = NULL, hints;
@@ -14,7 +15,7 @@ bool Client::Connect(std::string domain, std::string port)
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
 
-	m_FuncResult = getaddrinfo(domain.c_str(), port.c_str(), &hints, &result);
+	m_FuncResult = getaddrinfo(host.c_str(), port.c_str(), &hints, &result);
 
 	if (m_FuncResult != 0)
 	{
@@ -71,7 +72,7 @@ bool Client::Connect(std::string domain, std::string port)
 bool Client::Disconnect()
 {
 	m_FuncResult = shutdown(m_Socket, SD_SEND);
-	
+
 	if (m_FuncResult == SOCKET_ERROR)
 	{
 		NETWORK_LOG_ERR_WIN("shutdown");
@@ -85,27 +86,32 @@ bool Client::Disconnect()
 	return true;
 }
 
-bool Client::Listen(std::function<void(std::string)> callback)
+bool Client::Listen(std::function<void(NetworkCommand)> callback)
 {
-	NETWORK_LOG("Listening...");
+	NETWORK_LOG("Listening on client...");
 
-	char receiveBuffer[RECEIVE_BUFFER_LENGTH];
+	char receiveBuffer[512];
 
 	do
 	{
 		ZeroMemory(receiveBuffer, sizeof(receiveBuffer));
 
-		m_FuncResult = recv(m_Socket, receiveBuffer, RECEIVE_BUFFER_LENGTH, 0);
+		m_FuncResult = recv(m_Socket, receiveBuffer, sizeof(receiveBuffer), 0);
 
 		if (m_FuncResult > 0)
 		{
 			NETWORK_LOG_ARG("Bytes received: ", m_FuncResult);
 
-			callback(receiveBuffer);
+			if (callback)
+			{
+				callback(NetworkCommands::Deserialize(receiveBuffer, m_FuncResult));
+			}
 		}
 		else if (m_FuncResult == 0)
 		{
 			NETWORK_LOG("Connection closed");
+
+			return false;
 		}
 		else
 		{
@@ -119,9 +125,11 @@ bool Client::Listen(std::function<void(std::string)> callback)
 	return true;
 }
 
-bool Client::Send(std::string data)
+bool Client::Send(NetworkCommand command)
 {
-	m_FuncResult = send(m_Socket, data.c_str(), (int)data.size(), 0);
+	std::vector<char> data = NetworkCommands::Serialize(command);
+
+	m_FuncResult = send(m_Socket, data.data(), (int)data.size(), 0);
 
 	if (m_FuncResult == SOCKET_ERROR)
 	{
@@ -136,4 +144,14 @@ bool Client::Send(std::string data)
 	NETWORK_LOG_ARG("Bytes sent: ", m_FuncResult);
 
 	return true;
+}
+
+std::string Client::GetHost()
+{
+	return m_Host;
+}
+
+std::string Client::GetPort()
+{
+	return m_Port;
 }
