@@ -124,10 +124,7 @@ void ClientP2P::ServerListen()
 
 void ClientP2P::ClientListen(Client c)
 {
-	c.Listen([&c] (NetworkCommand cmd)
-		{
-			return OnClientMessage(c, cmd);
-		});
+	c.Listen(OnClientMessage);
 }
 
 void ClientP2P::OnServerMessage(int clientId, NetworkCommand cmd)
@@ -153,6 +150,8 @@ void ClientP2P::OnServerMessage(int clientId, NetworkCommand cmd)
 				std::lock_guard<std::mutex> guard(m_ServerMutex);
 
 				m_Clients[i].serverClientId = clientId;
+
+				break;
 			}
 		}
 
@@ -174,7 +173,7 @@ void ClientP2P::OnServerMessage(int clientId, NetworkCommand cmd)
 	}
 }
 
-void ClientP2P::OnClientMessage(Client c, NetworkCommand cmd)
+void ClientP2P::OnClientMessage(NetworkCommand cmd)
 {
 	if (m_OnMessage)
 	{

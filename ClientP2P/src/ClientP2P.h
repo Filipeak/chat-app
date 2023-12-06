@@ -46,7 +46,7 @@ private:
 	static void ClientListen(Client c);
 
 	static void OnServerMessage(int clientId, NetworkCommand cmd);
-	static void OnClientMessage(Client c, NetworkCommand cmd);
+	static void OnClientMessage(NetworkCommand cmd);
 	static void OnClientJoined(int clientId);
 	static void OnClientLeft(int clientId);
 };
