@@ -1,4 +1,4 @@
-# Chat App using Winsock
+# Chat App
 
 A simple chat app built in Visual Studio C++ using Winsock library
 
