@@ -3,6 +3,8 @@
 ## Overview
 A simple chat app built in Visual Studio C++ using Winsock library
 
+### Warning: There isn't any kind of encryption or security
+
 ## Features
 - Client-Server architecture
 - Peer-to-peer architecture
