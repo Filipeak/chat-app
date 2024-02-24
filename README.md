@@ -3,8 +3,6 @@
 ## Overview
 A simple chat app built in Visual Studio C++ using Winsock library
 
-### Warning: There isn't any kind of encryption or security
-
 ## Features
 - Client-Server architecture
 - Peer-to-peer architecture
@@ -18,6 +16,8 @@ A simple chat app built in Visual Studio C++ using Winsock library
 
 ## Usage
 Before using remember to build the project!
+
+#### Warning: There isn't any kind of encryption or security
 
 ### Client-Server
 To use the client-server architecture run the ```Server.exe```, it will start on port 1337 by default. Then start **twice** the ```Client.exe``` and provide nicknames. Clients will connect to the server and now you can exchange messages by simply typing them to terminal. You can join as many clients you want.
