@@ -10,6 +10,8 @@ static bool m_Finished;
 
 static void OnListen(NetworkCommand cmd)
 {
+	NETWORK_LOG_THREAD_GUARD();
+
 	if (cmd.type == NETWORK_COMMAND_USER_MESSAGE_)
 	{
 		std::cout << " > " << cmd.payload << std::endl;
@@ -53,7 +55,15 @@ int main()
 	std::cout << "Enter nickname: ";
 	std::getline(std::cin, nickname);
 
-	if (s_Client.Connect("127.0.0.1", "1337"))
+	std::string ip;
+	std::cout << "Enter ip: ";
+	std::getline(std::cin, ip);
+
+	std::string port;
+	std::cout << "Enter port: ";
+	std::getline(std::cin, port);
+
+	if (s_Client.Connect(ip, port))
 	{
 		s_Client.Send({ NETWORK_COMMAND_USER_JOIN , nickname });
 

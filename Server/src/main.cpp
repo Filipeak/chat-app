@@ -43,7 +43,11 @@ int main()
 {
 	Network::Init();
 
-	if (Server::Bind("1337"))
+	std::string port;
+	std::cout << "Enter port: ";
+	std::getline(std::cin, port);
+
+	if (Server::Bind(port))
 	{
 		Server::Listen(OnListen, nullptr, OnClientLeft);
 		Server::Dispose();

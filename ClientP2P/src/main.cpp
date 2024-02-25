@@ -20,6 +20,8 @@ static void InputThread()
 
 static void OnMessage(NetworkCommand cmd)
 {
+	NETWORK_LOG_THREAD_GUARD();
+
 	if (cmd.type == CLIENTP2P_MSG_CMD)
 	{
 		std::cout << " > " << cmd.payload << std::endl;
@@ -42,15 +44,19 @@ int main()
 	std::cout << "Enter port: ";
 	std::getline(std::cin, port);
 
+	std::string connectIp;
+	std::cout << "Enter ip to start connection: ";
+	std::getline(std::cin, connectIp);
+
 	std::string connectPort;
 	std::cout << "Enter port to start connection: ";
 	std::getline(std::cin, connectPort);
-	
+
 	if (ClientP2P::Bind(port, OnMessage))
 	{
-		if (connectPort != "")
+		if (connectIp != "" && connectPort != "")
 		{
-			ClientP2P::AddPeer("127.0.0.1", connectPort, -1);
+			ClientP2P::AddPeer(connectIp, connectPort, -1);
 		}
 
 		std::thread t(InputThread);

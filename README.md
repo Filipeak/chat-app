@@ -17,13 +17,13 @@ A simple chat app built in Visual Studio C++ using Winsock library
 ## Usage
 Before using remember to build the project!
 
-#### Warning: There isn't any kind of encryption or security
+#### Warning: There isn't any kind of encryption or security!
 
 ### Client-Server
-To use the client-server architecture run the ```Server.exe```, it will start on port 1337 by default. Then start **twice** the ```Client.exe``` and provide nicknames. Clients will connect to the server and now you can exchange messages by simply typing them to terminal. You can join as many clients you want.
+To use the client-server architecture run the ```Server.exe```, and set the port you with to start on. Then start a few instances of ```Client.exe```, provide their nicknames, set ip (you can 127.0.0.1 or localhost if server is on the same machine) and port of the server. Clients will connect to the server and now you can exchange messages by simply typing them to terminal.
 
 ### Peer-to-peer (P2P)
-To start, open the ```ClientP2P.exe``` app. Then provide your client's port (<ins>must be unique for each client</ins>). Leave the "Enter port to start connection" field blank. Next, open the ```ClientP2P.exe``` again, provide **different** port and pass your previous client's port to "Enter port to start connection" field and start. You should now be connected. There is no support for nicknames in P2P, but you can freely send messages to each other. You can join as many clients as you wish and they will all be synced.
+To start, open the ```ClientP2P.exe``` app. Then provide your client's port. Leave the "Enter ip to start connection" and "Enter port to start connection" fields blank. Next, open the ```ClientP2P.exe``` again and provide ip and port of the previous client (you can 127.0.0.1 or localhost if server is on the same machine). You should now be connected. There is no support for nicknames in P2P, but you can freely send messages to each other. You can join as many clients as you wish and they will all be synced.
 
 #### How does syncing work?
 Since P2P is decentrialized, there is no simple way of obtaining all users. When the new user connects to any of users already connected to the network it asks for its' list of connected clients. Then it tries to connect to them. This process continues until it connects to all users in network.
