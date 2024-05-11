@@ -6,7 +6,7 @@
 
 static std::mutex s_Mutex;
 static Client s_Client;
-static bool m_Finished;
+static bool s_Finished;
 
 static void OnListen(NetworkCommand cmd)
 {
@@ -28,7 +28,7 @@ static void OnListen(NetworkCommand cmd)
 
 static void InputThread()
 {
-	while (!m_Finished)
+	while (!s_Finished)
 	{
 		std::string s;
 		std::getline(std::cin, s);
@@ -44,7 +44,7 @@ static void ListenThread()
 
 	std::lock_guard<std::mutex> guard(s_Mutex);
 
-	m_Finished = true;
+	s_Finished = true;
 }
 
 int main()
